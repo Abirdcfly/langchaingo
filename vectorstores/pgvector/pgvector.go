@@ -29,7 +29,7 @@ const (
 )
 
 var (
-	ErrEmbedderWrongNumberVectors = errors.New("number of vectors from embedder does not match number of documents")
+	ErrEmbedderWrongNumberVectors = errors.New("numbers of vectors from embedder does not match number of documents")
 	ErrInvalidScoreThreshold      = errors.New("score threshold must be between 0 and 1")
 	ErrInvalidFilters             = errors.New("invalid filters")
 	ErrUnsupportedOptions         = errors.New("unsupported options")
