@@ -33,6 +33,7 @@ require (
 	github.com/dlclark/regexp2 v1.8.1 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/getsentry/sentry-go v0.12.0 // indirect
+	github.com/go-logr/logr v1.3.0 // indirect
 	github.com/go-openapi/analysis v0.21.2 // indirect
 	github.com/go-openapi/errors v0.20.3 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
@@ -113,7 +114,6 @@ require (
 	github.com/google/generative-ai-go v0.5.0
 	github.com/google/go-cmp v0.6.0
 	github.com/jackc/pgx/v5 v5.4.1
-	github.com/joho/godotenv v1.5.1
 	github.com/ledongthuc/pdf v0.0.0-20220302134840-0c2507a12d80
 	github.com/mattn/go-sqlite3 v1.14.17
 	github.com/metaphorsystems/metaphor-go v0.0.0-20230816231421-43794c04824e
@@ -132,4 +132,5 @@ require (
 	google.golang.org/api v0.149.0
 	google.golang.org/grpc v1.59.0
 	google.golang.org/protobuf v1.31.0
+	k8s.io/klog/v2 v2.110.1
 )

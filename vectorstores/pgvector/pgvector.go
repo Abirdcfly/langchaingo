@@ -12,6 +12,7 @@ import (
 	"github.com/tmc/langchaingo/embeddings"
 	"github.com/tmc/langchaingo/schema"
 	"github.com/tmc/langchaingo/vectorstores"
+	"k8s.io/klog/v2"
 )
 
 const (
@@ -50,45 +51,58 @@ type Store struct {
 var _ vectorstores.VectorStore = Store{}
 
 // New creates a new Store with options.
-func New(ctx context.Context, opts ...Option) (Store, error) {
+func New(ctx context.Context, log *klog.Verbose, opts ...Option) (Store, error) {
+	log.Infoln("pgvector.New")
 	store, err := applyClientOptions(opts...)
+	log.Infoln("applyClientOptions")
 	if err != nil {
 		return Store{}, err
 	}
+	log.Infoln("check conn")
 	if store.conn == nil {
+		log.Infoln("check conn is nil")
 		store.conn, err = pgx.Connect(ctx, store.postgresConnectionURL)
 		if err != nil {
 			return Store{}, err
 		}
 	}
-
+	log.Infoln("conn ping")
 	if err = store.conn.Ping(ctx); err != nil {
 		return Store{}, err
 	}
-	if err = store.init(ctx); err != nil {
+	log.Infoln("init")
+	if err = store.init(ctx, log); err != nil {
 		return Store{}, err
 	}
+	log.Infoln("init done")
 	return store, nil
 }
 
-func (s *Store) init(ctx context.Context) error {
+func (s *Store) init(ctx context.Context, log *klog.Verbose) error {
+	log.Infoln("createVectorExtensionIfNotExists")
 	if err := s.createVectorExtensionIfNotExists(ctx); err != nil {
 		return err
 	}
+	log.Infoln("createCollectionTableIfNotExists")
 	if err := s.createCollectionTableIfNotExists(ctx); err != nil {
 		return err
 	}
+	log.Infoln("createEmbeddingTableIfNotExists")
 	if err := s.createEmbeddingTableIfNotExists(ctx); err != nil {
 		return err
 	}
+	log.Infoln("createEmbeddingTableIfNotExists done")
 	if s.preDeleteCollection {
+		log.Infoln("preDeleteCollection")
 		if err := s.RemoveCollection(ctx); err != nil {
 			return err
 		}
 	}
+	log.Infoln("createOrGetCollection")
 	if err := s.createOrGetCollection(ctx); err != nil {
 		return err
 	}
+	log.Infoln("createOrGetCollection done")
 	return nil
 }
 
