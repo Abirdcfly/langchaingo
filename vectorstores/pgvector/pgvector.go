@@ -51,7 +51,7 @@ type Store struct {
 var _ vectorstores.VectorStore = Store{}
 
 // New creates a new Store with options.
-func New(ctx context.Context, log *klog.Verbose, opts ...Option) (Store, error) {
+func New(ctx context.Context, log klog.Verbose, opts ...Option) (Store, error) {
 	log.Infoln("pgvector.New")
 	store, err := applyClientOptions(opts...)
 	log.Infoln("applyClientOptions")
@@ -78,7 +78,7 @@ func New(ctx context.Context, log *klog.Verbose, opts ...Option) (Store, error) 
 	return store, nil
 }
 
-func (s *Store) init(ctx context.Context, log *klog.Verbose) error {
+func (s *Store) init(ctx context.Context, log klog.Verbose) error {
 	log.Infoln("createVectorExtensionIfNotExists")
 	if err := s.createVectorExtensionIfNotExists(ctx); err != nil {
 		return err
