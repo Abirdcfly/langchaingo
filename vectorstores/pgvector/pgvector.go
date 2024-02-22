@@ -263,10 +263,12 @@ func (s Store) SimilaritySearch(
 	if opts.Embedder != nil {
 		embedder = opts.Embedder
 	}
+	fmt.Println("query", query)
 	embedderData, err := embedder.EmbedQuery(ctx, query)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("embedderData", embedderData)
 	whereQuerys := make([]string, 0)
 	if scoreThreshold != 0 {
 		whereQuerys = append(whereQuerys, fmt.Sprintf("data.distance < %f", 1-scoreThreshold))
