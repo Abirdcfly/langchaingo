@@ -12,6 +12,7 @@ import (
 	"github.com/tmc/langchaingo/embeddings"
 	"github.com/tmc/langchaingo/schema"
 	"github.com/tmc/langchaingo/vectorstores"
+	"k8s.io/klog/v2"
 )
 
 const (
@@ -264,11 +265,13 @@ func (s Store) SimilaritySearch(
 		embedder = opts.Embedder
 	}
 	fmt.Println("query", query)
+	klog.Info("query", query)
 	embedderData, err := embedder.EmbedQuery(ctx, query)
 	if err != nil {
 		return nil, err
 	}
 	fmt.Println("embedderData", embedderData)
+	klog.Info(fmt.Sprintf("embedderData:%s", embedderData))
 	whereQuerys := make([]string, 0)
 	if scoreThreshold != 0 {
 		whereQuerys = append(whereQuerys, fmt.Sprintf("data.distance < %f", 1-scoreThreshold))
